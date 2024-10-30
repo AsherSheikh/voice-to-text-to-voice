@@ -5,9 +5,9 @@ import * as Speech from "expo-speech";
 
 const App = () => {
   const [pitch, setPitch] = useState("");
-  const [error, setError] = useState("");
-  const [end, setEnd] = useState("");
-  const [started, setStarted] = useState("");
+  const [error, setError] = useState("❎");
+  const [end, setEnd] = useState("❎");
+  const [started, setStarted] = useState("❎");
   const [results, setResults] = useState([]);
   const [partialResults, setPartialResults] = useState([]);
 
@@ -29,13 +29,13 @@ const App = () => {
   const onSpeechStart = (e) => {
     //Invoked when .start() is called without error
     console.log("onSpeechStart: ", e);
-    setStarted("√");
+    setStarted("✅");
   };
 
   const onSpeechEnd = (e) => {
     //Invoked when SpeechRecognizer stops recognition
     console.log("onSpeechEnd: ", e);
-    setEnd("√");
+    setEnd("✅");
   };
 
   const onSpeechError = (e) => {
@@ -67,7 +67,7 @@ const App = () => {
     try {
       let a = await Voice.start("en-US");
       setPitch("");
-      setError("");
+      setError("❎");
       setStarted("");
       setResults([]);
       setPartialResults([]);
@@ -104,11 +104,11 @@ const App = () => {
     try {
       await Voice.destroy();
       setPitch("");
-      setError("");
-      setStarted("");
+      setError("❎");
+      setStarted("❎");
       setResults([]);
       setPartialResults([]);
-      setEnd("");
+      setEnd("❎");
     } catch (e) {
       //eslint-disable-next-line
       console.error(e);
@@ -124,7 +124,7 @@ const App = () => {
       console.log("speak catch :", error);
     }
   };
-  console.log(error);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
@@ -135,8 +135,8 @@ const App = () => {
           <Text style={styles.textWithSpaceStyle}>{`End: ${end}`}</Text>
         </View>
         <View style={styles.headerContainer}>
-          <Text style={styles.textWithSpaceStyle}>{`Pitch: \n ${pitch}`}</Text>
-          <Text style={styles.textWithSpaceStyle}>{`Error: \n ${error?.message ? error?.message : "N/A"}`}</Text>
+          <Text style={styles.textWithSpaceStyle}>{`Pitch:\n${pitch ? pitch.toFixed(2) : 0}`}</Text>
+          <Text style={styles.textWithSpaceStyle}>{`Error:\n${error?.message ? error?.message : error}`}</Text>
         </View>
         <TouchableOpacity style={styles.recordButton} onPressOut={stopRecognizing} onLongPress={startRecognizing}>
           <Image
